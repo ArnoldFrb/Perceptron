@@ -43,13 +43,13 @@ class Funtions:
         return yr
 
     # METODO PARA OBTENER LA FUNCION ESCALON
-    def FuncionRampa(self, salidaSoma):
+    def FuncionRampa(self, salidaSoma, entrada, rampa):
         yr = []
         for i in range(len(salidaSoma)):
             if salidaSoma[i] < 0:
                 yr.append(0)
             if salidaSoma[i] >= 0 and salidaSoma[i] <= 1:
-                yr.append(salidaSoma[i])
+                yr.append(entrada if rampa else salidaSoma[i])
             if salidaSoma[i] > 1:
                 yr.append(1)
         return yr
@@ -67,12 +67,12 @@ class Funtions:
         return yr
 
     # NOMBRE DE LA FUNCION SALIDA
-    def FuncionSalida(self, funcionSalida, salidaSoma):
+    def FuncionSalida(self, funcionSalida, salidaSoma, entrada, rampa):
         switcher = {
             'ESCALON': self.FuncionEscalon(salidaSoma),
             'LINEAL': self.FuncionLineal(salidaSoma),
             'SIGMOIDE': self.FuncionSigmoide(salidaSoma),
-            'RAMPA': self.FuncionRampa(salidaSoma)
+            'RAMPA': self.FuncionRampa(salidaSoma, entrada, rampa)
         }
         return switcher.get(funcionSalida, "ERROR")
 

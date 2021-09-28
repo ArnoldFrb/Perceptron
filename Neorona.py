@@ -78,7 +78,7 @@ class Neorona:
             for entrada, salida in zip(self.Entradas, self.Salidas):
 
                 salidaSoma = self.func.FuncionSoma(entrada, pesos, umbrales)
-                _salidaSoma = self.func.FuncionSalida(funcionSalida, salidaSoma)
+                _salidaSoma = self.func.FuncionSalida(funcionSalida, salidaSoma, entrada[0], self.rampa)
                 self.vsSalidas.append([sum(salida), sum(_salidaSoma)])
 
                 errorLineal = self.func.ErrorLineal(salida, _salidaSoma)
@@ -157,20 +157,18 @@ class Neorona:
         self.EntradasSimulacion = self.func.NormalizarMatrices(self.EntradasSimulacion)
         self.PesosSimulacion = self.func.NormalizarMatrices(self.PesosSimulacion)
 
-        print('//////////////////////////////////////////////////////')
-        print('----------------------SIMULACION----------------------')
-        print()
+        rampa = []
+        for lista in self.EntradasSimulacion:
+            rampa.append(all(dato == lista[0] for dato in lista))
+
+        self.rampaSimulacion = all(dato == rampa[0] for dato in rampa)
 
         self.SalidasGeneradas = []
 
         for entrada in self.EntradasSimulacion:
                 salidaSoma = self.func.FuncionSoma(entrada, self.PesosSimulacion, self.UmbralesSimulacion)
-                _salidaSoma = self.func.FuncionSalida(self.FuncionActivacionSimulacion, salidaSoma)
+                _salidaSoma = self.func.FuncionSalida(self.FuncionActivacionSimulacion, salidaSoma, entrada[0], self.rampaSimulacion)
                 self.SalidasGeneradas.append(sum(_salidaSoma))
-
-        print('SALIDAS:')
-        print(self.SalidasGeneradas)
-
 
     def GuardarResultados(self, entradas, pesos, umbrales, funcionSalida):
         ColumnaMatriz = []
